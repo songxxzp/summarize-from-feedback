@@ -1,3 +1,7 @@
+import json
+with open("./config.json") as f:
+    DATA_PATH = json.load(f)["DATA_PATH"]
+
 from functools import partial
 
 from summarize_from_feedback import encoder
@@ -394,7 +398,7 @@ test_task = combos(
 
 def random_teeny_model_spec(**run_params):
     return combos(
-        bind("load_path", "https://openaipublic.blob.core.windows.net/summarize-from-feedback/models/random-teeny"),
+        bind("load_path", DATA_PATH + "/models/random-teeny"),
         *[bind(f"run_params.{k}", v) for (k, v) in run_params.items()],
     )
 
@@ -402,7 +406,7 @@ def random_teeny_model_spec(**run_params):
 def stub_model_spec(**run_params):
     return combos(
         bind("device", "cpu"),
-        bind("load_path", "https://openaipublic.blob.core.windows.net/summarize-from-feedback/models/random-teeny"),
+        bind("load_path", DATA_PATH + "/models/random-teeny"),
         *[bind(f"run_params.{k}", v) for (k, v) in run_params.items()],
     )
 
@@ -416,12 +420,12 @@ def load_model_spec(load_path, short_name=None, **run_params):
 
 
 # tldr finetunes
-sup4 = partial(load_model_spec, "https://openaipublic.blob.core.windows.net/summarize-from-feedback/models/sup4", short_name="sup4")
+sup4 = partial(load_model_spec, DATA_PATH + "/models/sup4", short_name="sup4")
 
-rm4 = partial(load_model_spec, "https://openaipublic.blob.core.windows.net/summarize-from-feedback/models/rm4", short_name="rm4")
+rm4 = partial(load_model_spec, DATA_PATH + "/models/rm4", short_name="rm4")
 
 sup4_ppo_rm4 = partial(
     load_model_spec,
-    "https://openaipublic.blob.core.windows.net/summarize-from-feedback/models/sup4_ppo_rm4",
+    DATA_PATH + "/models/sup4_ppo_rm4",
     short_name="sup4_ppo_rm4",
 )

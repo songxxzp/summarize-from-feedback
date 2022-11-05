@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+import sys, os
+sys.path.append(os.getcwd())
+import json
+with open("./config.json") as f:
+    DATA_PATH = json.load(f)["DATA_PATH"]
 
 import fire
 
@@ -13,14 +18,14 @@ def experiment_definitions():
         bind_nested("task", utils.tldr_task),
         bind("mpi", 1),
         bind_nested("reward_model_spec", utils.rm4()),
-        bind("input_path", "https://openaipublic.blob.core.windows.net/summarize-from-feedback/samples/sup4_ppo_rm4"),
+        bind("input_path", DATA_PATH + "/samples/sup4_ppo_rm4"),
     )
 
     test = combos(
         bind_nested("task", utils.test_task),
         bind_nested("reward_model_spec", utils.random_teeny_model_spec()),
         bind("mpi", 1),
-        bind("input_path", "https://openaipublic.blob.core.windows.net/summarize-from-feedback/samples/test"),
+        bind("input_path", DATA_PATH + "/samples/test"),
     )
     test_cpu = combos(
         test,

@@ -5,6 +5,8 @@ import hashlib
 import json
 import os
 import re
+with open("./config.json") as f:
+    DATA_PATH = json.load(f)["DATA_PATH"]
 
 import ftfy
 
@@ -125,14 +127,14 @@ def _cnndm_iter(split, subset="all", refs_with_bullets=False, clean_highlights=T
     if split == "valid":
         split = "val"
     with blobs.open_file_cached(
-        f"https://openaipublic.blob.core.windows.net/summarize-from-feedback/datasets/cnndm/url_lists/{subset}_{split}.txt"
+        f"{DATA_PATH}/datasets/cnndm/url_lists/{subset}_{split}.txt"
     ) as f:
         urls = [line.strip() for line in f]
 
-    with blobs.open_file_cached("https://openaipublic.blob.core.windows.net/summarize-from-feedback/datasets/cnndm/titles.json") as f:
+    with blobs.open_file_cached(DATA_PATH + "/datasets/cnndm/titles.json") as f:
         titles = json.load(f)
     urls_dir = blobs.download_directory_cached(
-        f"https://openaipublic.blob.core.windows.net/summarize-from-feedback/datasets/cnndm/cache_{split}"
+        f"{DATA_PATH}/datasets/cnndm/cache_{split}"
     )
 
     for url in urls:

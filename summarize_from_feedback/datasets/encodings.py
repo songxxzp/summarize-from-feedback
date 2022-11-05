@@ -3,12 +3,14 @@ import os.path
 from dataclasses import dataclass
 from functools import lru_cache
 from typing import ClassVar
+with open("./config.json") as f:
+    DATA_PATH = json.load(f)["DATA_PATH"]
 
 import blobfile as bf
 import regex as re
 import torch
 
-ENCODINGS_BASE = "https://openaipublic.blob.core.windows.net/summarize-from-feedback/encodings"
+ENCODINGS_BASE = DATA_PATH + "/encodings"
 
 
 def read_file(path):
